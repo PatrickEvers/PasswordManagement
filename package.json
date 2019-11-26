@@ -1,0 +1,14 @@
+{
+  "name": "passwordmanagement",
+  "version": "1.0.0",
+  "description": "A password management tool",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Patrick Evers",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^7.1.2"
+  }
+}
