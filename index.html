@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Password Management</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <h1>Password Management</h1>
-    <label>Wofür ist das Passwort?</label>
-    <input type="text" id="used-for">
-    <br>
-    <label>Verschlüsselungs Passwort:</label>
-    <input type="password" id="master-password">
-    <br>
-    <label>Passwort:</label>
-    <input type="password" id="password">
-    <button id="showPwBtn">Passwort anzeigen</button>
-    <br>
-    <button id="encBtn">Speichern</button>
-    <button id="decBtn">Entschlüsseln</button>
+    <div id="myForm">
+        <label>Wofür ist das Passwort?</label>
+        <input type="text" id="used-for">
+        <br>
+        <label>Verschlüsselungs Passwort:</label>
+        <input type="password" id="master-password">
+        <br>
+        <label>Passwort:</label>
+        <input type="password" id="password">
+        <br>
+        <button id="showPwBtn">Passwort anzeigen</button>
+        <br>
+        <button id="encBtn">Speichern</button>
+        <button id="decBtn">Entschlüsseln</button>
+    </div>
     <script src="home.js"></script>
 </body>
 </html>

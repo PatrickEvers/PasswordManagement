@@ -1,0 +1,18 @@
+body{
+	background-color:#f4f4f4;
+	color:#555555;
+	
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:normal;
+	
+	line-height:1.6em;
+    margin:0;
+    
+    text-align: center;
+}
+
+#myForm label{
+    display:block;
+}
+
