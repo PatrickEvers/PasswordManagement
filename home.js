@@ -2,29 +2,43 @@ const fs = require('fs');
 const crypto = require('crypto');
 const fsasync = fs.promises;
 
+//Klickevent für das Verschlüsseln
 document.getElementById('encBtn').addEventListener('click', () =>{
     var usedFor = document.getElementById('used-for').value;
     var password = document.getElementById('password').value;
     var masterPassword = document.getElementById('master-password').value;
 
-    var content = usedFor + ": " + enc(masterPassword, password) + "\n";
+    var content = usedFor + ": " + encrypt(masterPassword, password) + "\n";
     fsasync.appendFile('passwords.txt', content, 'utf8'); 
 })
 
+//Klickevent für das Entschlüsseln
 document.getElementById('decBtn').addEventListener('click', () =>{
     var usedFor = document.getElementById('used-for').value;
     var masterPassword = document.getElementById('master-password').value;
+   
+   //Hole Passwort anhand des Verwendungszwecks aus der Datei.
     var allPasswords = fs.readFileSync('passwords.txt','utf8').toString();
     var password = allPasswords.substring(allPasswords.indexOf(usedFor+": "));
     password = password.substring(0,password.indexOf("\n"));
+    password = password.substring(password.indexOf(" ")+1).toString();
     
+    console.log(decrypt(password, masterPassword))
 })
 
-
-function enc (masterPassword, password){
+//Funktion für die Verschlüsselung
+function encrypt (masterPassword, password){
     var key = crypto.createCipher('aes-128-cbc', masterPassword);
     var str = key.update(password, 'utf8', 'hex')
     str += key.final('hex');
     
     return(str);
 }
+
+//Funktion für die Entschlüsselung
+function decrypt(string, key) {
+    var decipher = crypto.createDecipher('aes-128-cbc', key)
+    var dec = decipher.update(string, 'hex', 'utf8')
+    dec += decipher.final('utf8')
+    return dec;
+   }
