@@ -23,7 +23,17 @@ document.getElementById('decBtn').addEventListener('click', () =>{
     password = password.substring(0,password.indexOf("\n"));
     password = password.substring(password.indexOf(" ")+1).toString();
     
-    console.log(decrypt(password, masterPassword))
+    document.getElementById('password').value = decrypt(password, masterPassword);
+})
+
+showPwBtn.addEventListener('click', () =>{
+    var password = document.getElementById('password');
+    if(password.type == 'password'){        
+        password.type = 'text';
+    }
+    else{
+        password.type = 'password';
+    }
 })
 
 //Funktion für die Verschlüsselung
@@ -41,4 +51,4 @@ function decrypt(string, key) {
     var dec = decipher.update(string, 'hex', 'utf8')
     dec += decipher.final('utf8')
     return dec;
-   }
+}
