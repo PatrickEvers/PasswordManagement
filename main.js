@@ -43,7 +43,7 @@ exports.newBrowserWindow = () => {
     });
   
     win.loadURL(url.format({
-        pathname: path.join(__dirname,'passwords.html'),
+        pathname: path.join(__dirname,'addPassword.html'),
         protocol:'file:',
         slashes:true
     }));

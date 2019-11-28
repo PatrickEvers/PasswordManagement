@@ -11,9 +11,15 @@ body{
     
     text-align: center;
 }
-
+#myForm{
+	display:none;
+}
 #myForm label{
     display:block;
+}
+
+#setMPw label{
+	display:block;
 }
 
 #main-table{

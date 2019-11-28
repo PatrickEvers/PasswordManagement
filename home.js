@@ -1,61 +1,67 @@
 const fs = require('fs');
 const crypto = require('crypto');
-const fsasync = fs.promises;
 const remote = require('electron').remote;
 const main = remote.require('./main.js');
 
-//Klickevent für das Verschlüsseln
-document.getElementById('encBtn').addEventListener('click', () =>{
-    var usedFor = document.getElementById('used-for').value;
-    var password = document.getElementById('password').value;
-    var masterPassword = document.getElementById('master-password').value;
+var allPasswords = fs.readFileSync('passwords.txt','utf8').toString().split('\n');
 
-    var content = usedFor + ": " + encrypt(masterPassword, password) + "\n";
-    fsasync.appendFile('passwords.txt', content, 'utf8');
-})
+//Aufteilung von Verwendungszweck & Passwort
+for(var i=0;i<allPasswords.length;i++){
+    allPasswords[i] = allPasswords[i].split(' ');
+}
 
-//Klickevent für das Entschlüsseln
-document.getElementById('decBtn').addEventListener('click', () =>{
-    var usedFor = document.getElementById('used-for').value;
-    var masterPassword = document.getElementById('master-password').value;    
-    var allPasswords = fs.readFileSync('passwords.txt','utf8').toString();
+//Schreibe Passwörter in die Tabelle
+for(var i=0;i<allPasswords.length;i++){
+    if(allPasswords[i] != ""){
+        var tr = document.createElement('tr')
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        var td3 = document.createElement('td');
+        var input = document.createElement('input');
+        var button = document.createElement('button');
 
-   //Hole Passwort anhand des Verwendungszwecks aus der Datei.    
-    var password = allPasswords.substring(allPasswords.indexOf(usedFor+": "));
-    password = password.substring(0,password.indexOf("\n"));
-    password = password.substring(password.indexOf(" ")+1).toString();
-    
-    document.getElementById('password').value = decrypt(password, masterPassword);
-})
+        td1.textContent = allPasswords[i][0];
+        input.value = allPasswords[i][1];
+        input.type = 'password';
+        input.readOnly = true;
+        input.id = 'pw'+(i+1);
+        button.textContent = 'Passwort anzeigen';
+        button.id = (i+1);
+        button.addEventListener('click', showPassword)
 
-//Klickevent für das Anzeigen des Passworts
-showPwBtn.addEventListener('click', () =>{
-    var password = document.getElementById('password');
-    if(password.type == 'password'){        
-        password.type = 'text';
+        document.getElementById('main-table').appendChild(tr);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        td2.appendChild(input);
+        td3.appendChild(button);
     }
-    else{
-        password.type = 'password';
-    }
-})
+}
 
-PwListBtn.addEventListener('click', () =>{
+addPwBtn.addEventListener('click', () =>{
     main.newBrowserWindow();
 })
 
-//Funktion für die Verschlüsselung
-function encrypt (masterPassword, password){
-    var key = crypto.createCipher('aes-128-cbc', masterPassword);
-    var str = key.update(password, 'utf8', 'hex')
-    str += key.final('hex');
-    
-    return(str);
-}
+//Funktion zum Anzeigen/Verstecken des Passworts.
+//TODO: Usereingabe des keys
+function showPassword(event){
+    var input = document.getElementById('pw'+event.target.id);
+    var key = 'Hi';
 
-//Funktion für die Entschlüsselung
-function decrypt(string, key) {
-    var decipher = crypto.createDecipher('aes-128-cbc', key)
-    var dec = decipher.update(string, 'hex', 'utf8')
-    dec += decipher.final('utf8')
-    return dec;
+    if(input.type == 'password'){       
+        var string = input.value;
+        var decipher = crypto.createDecipher('aes-128-cbc', key)
+        var dec = decipher.update(string, 'hex', 'utf8')
+        dec += decipher.final('utf8')
+        input.value = dec;        
+        input.type = 'text';
+    }
+    else{
+        var string = input.value;
+        var cipher = crypto.createCipher('aes-128-cbc', key);
+        var enc = cipher.update(string, 'utf8', 'hex')
+        enc += cipher.final('hex');
+        input.value = enc;
+        input.type = 'password';
+    }
 }
