@@ -80,7 +80,8 @@ document.getElementById('encBtn').addEventListener('click', () =>{
 //Klickevent für den Button zum Setzen des Master-Passworts
 MPwBtn.addEventListener('click', () =>{
     var div = document.getElementById("main");
-    if (div.style.display === "none") {
+    var input = document.getElementById("master-password");
+    if (div.style.display === "none" && input.value !== "") {
         div.style.display = "block";
         document.getElementById("setMPw").style.display = "none";
         document.getElementById("myForm").style.display = "none";
@@ -110,10 +111,16 @@ function showPassword(event){
     var key = document.getElementById('master-password').value;
 
     if(input.type == 'password'){       
-        var string = input.value;
-        var decipher = crypto.createDecipher('aes-128-cbc', key)
-        var dec = decipher.update(string, 'hex', 'utf8')
-        dec += decipher.final('utf8')
+        try {
+            var string = input.value;
+            var decipher = crypto.createDecipher('aes-128-cbc', key)
+            var dec = decipher.update(string, 'hex', 'utf8')
+            dec += decipher.final('utf8')
+        } catch (ex) {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("setMPw").style.display = "block";
+            return;
+        }
         input.value = dec;        
         input.type = 'text';
     }
