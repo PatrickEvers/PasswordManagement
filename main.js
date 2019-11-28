@@ -28,3 +28,23 @@ app.on('window-all-closed', () =>{
         app.quit();
     }
 });
+
+exports.newBrowserWindow = () => {
+
+    const path = require('path');
+    const url = require('url');
+
+    const win = new BrowserWindow({
+      height: 600,
+      width: 800,
+      webPreferences: {
+        nodeIntegration: true
+        }
+    });
+  
+    win.loadURL(url.format({
+        pathname: path.join(__dirname,'passwords.html'),
+        protocol:'file:',
+        slashes:true
+    }));
+  }

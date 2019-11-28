@@ -1,6 +1,8 @@
 const fs = require('fs');
 const crypto = require('crypto');
 const fsasync = fs.promises;
+const remote = require('electron').remote;
+const main = remote.require('./main.js');
 
 //Klickevent für das Verschlüsseln
 document.getElementById('encBtn').addEventListener('click', () =>{
@@ -9,16 +11,16 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     var masterPassword = document.getElementById('master-password').value;
 
     var content = usedFor + ": " + encrypt(masterPassword, password) + "\n";
-    fsasync.appendFile('passwords.txt', content, 'utf8'); 
+    fsasync.appendFile('passwords.txt', content, 'utf8');
 })
 
 //Klickevent für das Entschlüsseln
 document.getElementById('decBtn').addEventListener('click', () =>{
     var usedFor = document.getElementById('used-for').value;
-    var masterPassword = document.getElementById('master-password').value;
-   
-   //Hole Passwort anhand des Verwendungszwecks aus der Datei.
+    var masterPassword = document.getElementById('master-password').value;    
     var allPasswords = fs.readFileSync('passwords.txt','utf8').toString();
+
+   //Hole Passwort anhand des Verwendungszwecks aus der Datei.    
     var password = allPasswords.substring(allPasswords.indexOf(usedFor+": "));
     password = password.substring(0,password.indexOf("\n"));
     password = password.substring(password.indexOf(" ")+1).toString();
@@ -26,6 +28,7 @@ document.getElementById('decBtn').addEventListener('click', () =>{
     document.getElementById('password').value = decrypt(password, masterPassword);
 })
 
+//Klickevent für das Anzeigen des Passworts
 showPwBtn.addEventListener('click', () =>{
     var password = document.getElementById('password');
     if(password.type == 'password'){        
@@ -34,6 +37,10 @@ showPwBtn.addEventListener('click', () =>{
     else{
         password.type = 'password';
     }
+})
+
+PwListBtn.addEventListener('click', () =>{
+    main.newBrowserWindow();
 })
 
 //Funktion für die Verschlüsselung
