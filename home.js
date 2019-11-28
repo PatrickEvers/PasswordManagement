@@ -15,7 +15,7 @@ for(var i=0;i<allPasswords.length;i++){
 //Schreibe Passwörter in die Tabelle
 for(var i=0;i<allPasswords.length;i++){
     if(allPasswords[i] != ""){
-        var tr = document.createElement('tr')
+        var tr = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
         var td3 = document.createElement('td');
@@ -40,14 +40,43 @@ for(var i=0;i<allPasswords.length;i++){
     }
 }
 
-//Klickevent für das Verschlüsseln
+//Klickevent für das Verschlüsseln & Speichern
 document.getElementById('encBtn').addEventListener('click', () =>{
-    var usedFor = document.getElementById('used-for').value;
-    var password = document.getElementById('password').value;
-    var masterPassword = document.getElementById('master-password').value;
-
-    var content = usedFor + ": " + encrypt(masterPassword, password) + "\n";
+    var usedFor = document.getElementById('used-for');
+    var password = document.getElementById('password');
+    var masterPassword = document.getElementById('master-password');
+    var encPassword = encrypt(masterPassword.value, password.value);
+    var content = usedFor.value + ": " + encPassword + "\n";
     fsasync.appendFile('passwords.txt', content, 'utf8');
+
+    var tr = document.createElement('tr');
+    var td1 = document.createElement('td');
+    var td2 = document.createElement('td');
+    var td3 = document.createElement('td');
+    var input = document.createElement('input');
+    var button = document.createElement('button');
+
+    var trCount = countTableRows(document.getElementById('main-table'));
+ 
+    td1.textContent = usedFor.value + ":";
+    input.value = encPassword;
+    input.type = 'password';
+    input.readOnly = true;
+    input.id = 'pw'+ (trCount+1);
+    button.textContent = 'Passwort anzeigen';
+    button.id = (trCount+1);
+    button.addEventListener('click', showPassword);
+    
+    document.getElementById('main-table').appendChild(tr);
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    td2.appendChild(input);
+    td3.appendChild(button);
+
+    usedFor.value = '';
+    password.value  = '';
+    document.getElementById("myForm").style.display = "none";
 })
 
 //Klickevent für den Button zum Setzen des Master-Passworts
@@ -95,4 +124,15 @@ function showPassword(event){
         input.value = encrypt(key, string);
         input.type = 'password';
     }
+}
+
+function countTableRows(parent){
+        var rows = 0;
+        var children = parent.childNodes.length;
+        for(var i=0; i < children; i++){
+            if(parent.childNodes[i].nodeType != 3){
+                rows++;
+            }
+        }
+        return rows;
 }
