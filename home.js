@@ -1,8 +1,6 @@
 const fs = require('fs');
 const fsasync = fs.promises;
 const crypto = require('crypto');
-const remote = require('electron').remote;
-const main = remote.require('./main.js');
 
 var allPasswords = fs.readFileSync('passwords.txt','utf8').toString().split('\n');
 document.getElementById("main").style.display = "none";
@@ -126,6 +124,7 @@ function showPassword(event){
     }
 }
 
+//Funktion zum Zählen der Tabellenzeilen
 function countTableRows(parent){
         var rows = 0;
         var children = parent.childNodes.length;
