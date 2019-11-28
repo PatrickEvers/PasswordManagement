@@ -1,9 +1,11 @@
 const fs = require('fs');
+const fsasync = fs.promises;
 const crypto = require('crypto');
 const remote = require('electron').remote;
 const main = remote.require('./main.js');
 
 var allPasswords = fs.readFileSync('passwords.txt','utf8').toString().split('\n');
+document.getElementById("main").style.display = "none";
 
 //Aufteilung von Verwendungszweck & Passwort
 for(var i=0;i<allPasswords.length;i++){
@@ -38,9 +40,33 @@ for(var i=0;i<allPasswords.length;i++){
     }
 }
 
-addPwBtn.addEventListener('click', () =>{
-    main.newBrowserWindow();
+//Klickevent für das Verschlüsseln
+document.getElementById('encBtn').addEventListener('click', () =>{
+    var usedFor = document.getElementById('used-for').value;
+    var password = document.getElementById('password').value;
+    var masterPassword = document.getElementById('master-password').value;
+
+    var content = usedFor + ": " + encrypt(masterPassword, password) + "\n";
+    fsasync.appendFile('passwords.txt', content, 'utf8');
 })
+
+//Klickevent für den Button zum Setzen des Master-Passworts
+MPwBtn.addEventListener('click', () =>{
+    var form = document.getElementById("main");
+    if (form.style.display === "none") {
+      form.style.display = "block";
+      document.getElementById("setMPw").style.display = "none";
+    }    
+})
+
+//Funktion für die Verschlüsselung
+function encrypt (masterPassword, password){
+    var key = crypto.createCipher('aes-128-cbc', masterPassword);
+    var str = key.update(password, 'utf8', 'hex')
+    str += key.final('hex');
+    
+    return(str);
+}
 
 //Funktion zum Anzeigen/Verstecken des Passworts.
 //TODO: Usereingabe des keys
