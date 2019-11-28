@@ -52,27 +52,35 @@ document.getElementById('encBtn').addEventListener('click', () =>{
 
 //Klickevent für den Button zum Setzen des Master-Passworts
 MPwBtn.addEventListener('click', () =>{
-    var form = document.getElementById("main");
-    if (form.style.display === "none") {
-      form.style.display = "block";
-      document.getElementById("setMPw").style.display = "none";
+    var div = document.getElementById("main");
+    if (div.style.display === "none") {
+        div.style.display = "block";
+        document.getElementById("setMPw").style.display = "none";
+        document.getElementById("myForm").style.display = "none";
     }    
 })
 
+//Klickevent zum Anzeigen der Form für das Hinzufügen eines Passworts
+addPwBtn.addEventListener('click', () =>{
+    var div = document.getElementById('myForm');
+    if (div.style.display === "none") {
+        div.style.display = "block";
+    }
+})
+
 //Funktion für die Verschlüsselung
-function encrypt (masterPassword, password){
-    var key = crypto.createCipher('aes-128-cbc', masterPassword);
-    var str = key.update(password, 'utf8', 'hex')
-    str += key.final('hex');
+function encrypt (key, string){
+    var cipher = crypto.createCipher('aes-128-cbc', key);
+    var enc = cipher.update(string, 'utf8', 'hex')
+    enc += cipher.final('hex');
     
-    return(str);
+    return enc;
 }
 
 //Funktion zum Anzeigen/Verstecken des Passworts.
-//TODO: Usereingabe des keys
 function showPassword(event){
     var input = document.getElementById('pw'+event.target.id);
-    var key = 'Hi';
+    var key = document.getElementById('master-password').value;
 
     if(input.type == 'password'){       
         var string = input.value;
@@ -84,10 +92,7 @@ function showPassword(event){
     }
     else{
         var string = input.value;
-        var cipher = crypto.createCipher('aes-128-cbc', key);
-        var enc = cipher.update(string, 'utf8', 'hex')
-        enc += cipher.final('hex');
-        input.value = enc;
+        input.value = encrypt(key, string);
         input.type = 'password';
     }
 }

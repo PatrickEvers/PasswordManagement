@@ -12,6 +12,10 @@ body{
     text-align: center;
 }
 
+#myForm{
+	display:none;
+}
+
 #myForm label{
     display:block;
 }
