@@ -1,4 +1,5 @@
 const fs = require('fs');
+const crypto = require('crypto');
 
 var allPasswords = fs.readFileSync('passwords.txt','utf8').toString().split('\n');
 
@@ -35,12 +36,26 @@ for(var i=0;i<allPasswords.length;i++){
     }
 }
 
+//Funktion zum Anzeigen/Verstecken des Passworts.
+//TODO: Usereingabe des keys
 function showPassword(event){
     var input = document.getElementById('pw'+event.target.id);
-    if(input.type == 'password'){        
+    var key = 'Hi';
+
+    if(input.type == 'password'){       
+        var string = input.value;
+        var decipher = crypto.createDecipher('aes-128-cbc', key)
+        var dec = decipher.update(string, 'hex', 'utf8')
+        dec += decipher.final('utf8')
+        input.value = dec;        
         input.type = 'text';
     }
     else{
+        var string = input.value;
+        var cipher = crypto.createCipher('aes-128-cbc', key);
+        var enc = cipher.update(string, 'utf8', 'hex')
+        enc += cipher.final('hex');
+        input.value = enc;
         input.type = 'password';
     }
 }
