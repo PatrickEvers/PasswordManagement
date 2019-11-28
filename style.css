@@ -16,6 +16,12 @@ body{
     display:block;
 }
 
-#main-list {
-	list-style-type: none;
+#main-table{
+	margin:0 auto;
+}
+
+#main-table input{
+	width:200px;
+	border:none;
+	background-color: #f4f4f4;
 }
