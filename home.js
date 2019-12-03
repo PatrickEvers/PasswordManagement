@@ -25,7 +25,7 @@ for(var i=0;i<allPasswords.length;i++){
         input.type = 'password';
         input.readOnly = true;
         input.id = 'pw'+(i+1);
-        button.textContent = 'Passwort anzeigen';
+        button.className = "fa fa-fw fa-eye field_icon toggle-password";
         button.id = (i+1);
         button.addEventListener('click', showPassword)
 
@@ -61,7 +61,7 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     input.type = 'password';
     input.readOnly = true;
     input.id = 'pw'+ (trCount+1);
-    button.textContent = 'Passwort anzeigen';
+    button.className = "fa fa-fw fa-eye field_icon toggle-password";
     button.id = (trCount+1);
     button.addEventListener('click', showPassword);
     
@@ -109,7 +109,8 @@ function encrypt (key, string){
 function showPassword(event){
     var input = document.getElementById('pw'+event.target.id);
     var key = document.getElementById('master-password').value;
-
+    var button = document.getElementById(event.target.id);
+    
     if(input.type == 'password'){       
         try {
             var string = input.value;
@@ -123,11 +124,13 @@ function showPassword(event){
         }
         input.value = dec;        
         input.type = 'text';
+        button.className = "fa fa-fw fa-eye-slash field_icon toggle-password";
     }
     else{
         var string = input.value;
         input.value = encrypt(key, string);
         input.type = 'password';
+        button.className = "fa fa-fw fa-eye field_icon toggle-password";
     }
 }
 
