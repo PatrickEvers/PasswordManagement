@@ -35,7 +35,8 @@ header{
 #main-table input{
 	width:150px;
 	border:none;
-	background-color: #00a3e4;
+	background-color: #0013bb;
+	color:white;
 }
 
 #main-table input:focus{
@@ -43,14 +44,15 @@ header{
 }
 
 #main-table tr{
-	background-color: #00a3e4;
+	background-color: #0013bb;
 	display: grid;
 	grid-template-columns:repeat(3,1fr);
 	border: 1px solid black;
 }
 
 #main-table tr button{
-	background-color: #00a3e4;
+	background-color: #0013bb;
+	color:white;
 	border:none;
 }
 
@@ -59,7 +61,7 @@ header{
 }
 
 #main-table tr button:hover{
-	color:white;
+	color:turquoise;
 }
 
 #main-table td:first-child{
@@ -73,6 +75,9 @@ header{
 #main-table #table-head{
 	grid-column: 2;
 	grid-row: 1;
+}
+#main-table #table-head img{
+	height: 30px;
 }
 #main-table #table-usage{
 	grid-column: 1;

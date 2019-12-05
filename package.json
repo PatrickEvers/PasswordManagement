@@ -9,6 +9,6 @@
   "author": "Patrick Evers",
   "license": "ISC",
   "dependencies": {
-    "electron": "^7.1.2"
+    "electron": "^7.1.3"
   }
 }

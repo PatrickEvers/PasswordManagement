@@ -25,7 +25,7 @@ for(var i=0;i<allPasswords.length;i++){
         tdUsage.id = "table-usage";
         tdPassword.id = "table-password";
         tdButton.id = "table-button";
-        tdHead.textContent = "HEAD";
+        tdHead.innerHTML = "<img src='TwitterLogo.png' alt='Logo'>";
         tdUsage.textContent = allPasswords[i][0];
         input.value = allPasswords[i][1];
         input.type = 'password';
@@ -55,15 +55,21 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     fsasync.appendFile('passwords.txt', content, 'utf8');
 
     var tr = document.createElement('tr');
-    var td1 = document.createElement('td');
-    var td2 = document.createElement('td');
-    var td3 = document.createElement('td');
+    var tdHead = document.createElement('td');
+    var tdUsage = document.createElement('td');
+    var tdPassword = document.createElement('td');
+    var tdButton = document.createElement('td');
     var input = document.createElement('input');
     var button = document.createElement('button');
 
     var trCount = countTableRows(document.getElementById('main-table'));
- 
-    td1.textContent = usedFor.value + ":";
+    
+    tdHead.id = "table-head";
+    tdUsage.id = "table-usage";
+    tdPassword.id = "table-password";
+    tdButton.id = "table-button";
+    tdHead.innerHTML = "<img src='TwitterLogo.png' alt='Logo'>";
+    tdUsage.textContent = usedFor.value + ":";
     input.value = encPassword;
     input.type = 'password';
     input.readOnly = true;
@@ -73,12 +79,13 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     button.addEventListener('click', showPassword);
     
     document.getElementById('main-table').appendChild(tr);
-    tr.appendChild(td1);
-    tr.appendChild(td2);
-    tr.appendChild(td3);
-    td2.appendChild(input);
-    td3.appendChild(button);
-
+    tr.appendChild(tdHead);
+    tr.appendChild(tdUsage);
+    tr.appendChild(tdPassword);
+    tr.appendChild(tdButton);
+    tdPassword.appendChild(input);
+    tdButton.appendChild(button);
+    
     usedFor.value = '';
     password.value  = '';
     document.getElementById("myForm").style.display = "none";
