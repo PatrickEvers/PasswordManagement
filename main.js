@@ -5,7 +5,7 @@ const url = require('url');
 //Öffne neues BrowserWindow, wenn die App ready ist.
 app.on('ready', () => {
     let win = new BrowserWindow({
-        width:800,
+        width:960,
         heigth:600,
         webPreferences: {
             nodeIntegration: true
