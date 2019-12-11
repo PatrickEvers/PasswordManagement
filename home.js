@@ -20,12 +20,23 @@ for(var i=0;i<allPasswords.length;i++){
         var tdButton = document.createElement('td');
         var input = document.createElement('input');
         var button = document.createElement('button');
+        var img = document.createElement('img');
 
         tdHead.id = "table-head";
         tdUsage.id = "table-usage";
         tdPassword.id = "table-password";
         tdButton.id = "table-button";
-        tdHead.innerHTML = "<img src='TwitterLogo.png' alt='Logo'>";
+        
+        imgSrc = allPasswords[i][0].substring(0,allPasswords[i][0].lastIndexOf(':')) + "Logo.png";
+        if (fs.existsSync(imgSrc)) {
+            img.src = imgSrc;
+        }
+        else{
+            img.src = 'electronLogo.png'
+        }
+        img.alt = "Logo";
+        tdHead.appendChild(img);
+        
         tdUsage.textContent = allPasswords[i][0];
         input.value = allPasswords[i][1];
         input.type = 'password';
@@ -33,7 +44,7 @@ for(var i=0;i<allPasswords.length;i++){
         input.id = 'pw'+(i+1);
         button.className = "fa fa-fw fa-eye field_icon toggle-password";
         button.id = (i+1);
-        button.addEventListener('click', showPassword)
+        button.addEventListener('click', showPassword);
 
         document.getElementById('main-table').appendChild(tr);
         tr.appendChild(tdHead);
@@ -61,6 +72,7 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     var tdButton = document.createElement('td');
     var input = document.createElement('input');
     var button = document.createElement('button');
+    var img = document.createElement('img');
 
     var trCount = countTableRows(document.getElementById('main-table'));
     
@@ -68,7 +80,17 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     tdUsage.id = "table-usage";
     tdPassword.id = "table-password";
     tdButton.id = "table-button";
-    tdHead.innerHTML = "<img src='TwitterLogo.png' alt='Logo'>";
+    
+    imgSrc = usedFor.value + "Logo.png";
+    if (fs.existsSync(imgSrc)) {
+        img.src = imgSrc;
+    }
+    else{
+        img.src = 'electronLogo.png'
+    }
+    img.alt = "Logo";
+    tdHead.appendChild(img);
+
     tdUsage.textContent = usedFor.value + ":";
     input.value = encPassword;
     input.type = 'password';
@@ -85,7 +107,6 @@ document.getElementById('encBtn').addEventListener('click', () =>{
     tr.appendChild(tdButton);
     tdPassword.appendChild(input);
     tdButton.appendChild(button);
-    
     usedFor.value = '';
     password.value  = '';
     document.getElementById("myForm").style.display = "none";
